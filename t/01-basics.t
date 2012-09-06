@@ -4,12 +4,18 @@ use 5.010;
 use strict;
 use warnings;
 
-use Crypt::Password::Util qw(looks_like_crypt);
+use Crypt::Password::Util qw(crypt_type looks_like_crypt);
 use Test::More 0.98;
 
-ok( looks_like_crypt('$1$$oXYGukVGYa16SN.Pw5vNt/'));
-ok( looks_like_crypt('$apr1$x$A8hldSzKARXWgJiwY6zTC.'));
-ok( looks_like_crypt('$apr1$12345678$A8hldSzKARXWgJiwY6zTC.'));
+is( crypt_type('SN.Pw5vNt/...'), "CRYPT");
+is( crypt_type('$1$$oXYGukVGYa16SN.Pw5vNt/'), "MD5-CRYPT");
+is( crypt_type('$apr1$x$A8hldSzKARXWgJiwY6zTC.'), "MD5-CRYPT");
+is( crypt_type('$apr1$12345678$A8hldSzKARXWgJiwY6zTC.'), "MD5-CRYPT");
+is( crypt_type('$5$12345678$'.("a" x 43)), "SSHA256");
+is( crypt_type('$6$12345678$'.("a" x 86)), "SSHA512");
+is( crypt_type('1a1dc91c907325c69271ddf0c944bc72'), "PLAIN-MD5");
+ok(!crypt_type('foo'));
+
 ok( looks_like_crypt('$6$12345678$'.("a" x 86)));
 ok(!looks_like_crypt('foo'));
 
