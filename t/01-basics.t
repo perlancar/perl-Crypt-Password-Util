@@ -4,7 +4,7 @@ use 5.010;
 use strict;
 use warnings;
 
-use Crypt::Password::Util qw(crypt_type looks_like_crypt);
+use Crypt::Password::Util qw(crypt_type looks_like_crypt crypt);
 use Test::More 0.98;
 
 is( crypt_type('$$.Pw5vNt/...'), "CRYPT");
@@ -18,5 +18,8 @@ ok(!crypt_type('foo'));
 
 ok( looks_like_crypt('$6$12345678$'.("a" x 86)));
 ok(!looks_like_crypt('foo'));
+
+# XXX more sophisticated testing
+ok(crypt_type(crypt("foo")), "crypt() succeeds");
 
 done_testing();
