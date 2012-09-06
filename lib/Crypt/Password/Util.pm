@@ -26,9 +26,11 @@ sub looks_like_crypt {
 =head1 SYNOPSIS
 
  use Crypt::Password::Util qw(looks_like_crypt);
- say looks_like_crypt('$6$4DdvgCFk$...');            # 1
- say looks_like_crypt('$1$$GmbL3iXOMZR57QuGDLv.L1'); # 1
- say looks_like_crypt('foo');                        # 0
+
+ say looks_like_crypt('$1$$...');               # 1
+ say looks_like_crypt('$apr1$4DdvgCFk$...');    # 1
+ say looks_like_crypt('$6$4DdvgCFk$...');       # 1
+ say looks_like_crypt('foo');                   # 0
 
 
 =head1 FUNCTIONS
