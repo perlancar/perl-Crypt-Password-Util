@@ -34,7 +34,7 @@ sub crypt_type {
 sub looks_like_crypt { !!crypt_type($_[0]) }
 
 sub crypt {
-    require UUID::Random;
+    require UUID::Random::Patch::UseMRS;
     require Digest::MD5;
 
     my $pass = shift;
