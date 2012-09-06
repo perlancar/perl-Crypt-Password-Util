@@ -91,7 +91,7 @@ Return true if C<$str> looks like a crypted password.
 
 =head2 crypt($str) => STR
 
-Like Perl's crypt(), but automatically choose the appropriate crypt() type and
+Like Perl's crypt(), but automatically choose the appropriate crypt type and
 random salt. Will first choose SSHA512 with 64-bit random salt. If not supported
 by system, fall back to MD5-CRYPT with 32-bit random salt. If that is not
 supported, fall back to CRYPT.

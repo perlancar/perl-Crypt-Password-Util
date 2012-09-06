@@ -1,5 +1,12 @@
 Revision history for Crypt-Password-Util
 
+0.06     2012-09-06 (SHARYANTO)
+
+         [ENHANCEMENTS]
+
+         - Add function: crypt().
+
+
 0.05     2012-09-06 (SHARYANTO)
 
          [BUG FIXES]
@@ -16,6 +23,8 @@ Revision history for Crypt-Password-Util
 
 
 0.03     2012-09-06 (SHARYANTO)
+
+         [ENHANCEMENTS]
 
          - Add function: crypt_type().
 
