@@ -1,5 +1,12 @@
 Revision history for Crypt-Password-Util
 
+0.05     2012-09-06 (SHARYANTO)
+
+         [BUG FIXES]
+
+         - CRYPT: salt can be non-base64 digits.
+
+
 0.04     2012-09-06 (SHARYANTO)
 
          [BUG FIXES]
