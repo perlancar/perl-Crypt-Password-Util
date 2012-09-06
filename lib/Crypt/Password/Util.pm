@@ -21,10 +21,10 @@ sub crypt_type {
     return "MD5-CRYPT" if /\A \$ (?:apr)?1 \$ $b64d {0,8} \$ $b64d {22} \z/ox;
 
     # salted SHA256, supported by glibc 2.7+
-    return "SSHA256"   if /\A \$ 5 \$ $b64d {0,8} \$ $b64d {43} \z/ox;
+    return "SSHA256"   if /\A \$ 5 \$ $b64d {0,16} \$ $b64d {43} \z/ox;
 
     # salted SHA512, supported by glibc 2.7+
-    return "SSHA512"   if /\A \$ 6 \$ $b64d {0,8} \$ $b64d {86} \z/ox;
+    return "SSHA512"   if /\A \$ 6 \$ $b64d {0,16} \$ $b64d {86} \z/ox;
 
     return "PLAIN-MD5" if /\A $hexd {32} \z/ox;
 
