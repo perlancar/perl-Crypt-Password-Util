@@ -46,7 +46,7 @@ sub looks_like_crypt { !!crypt_type($_[0]) }
  say crypt_type('$5$4DdvgCFk$...');                  # SSHA256
  say crypt_type('$6$4DdvgCFk$...');                  # SSHA512
  say crypt_type('1a1dc91c907325c69271ddf0c944bc72'); # PLAIN-MD5
- say crypt_type('foo');                   # undef
+ say crypt_type('foo');                              # undef
 
  say looks_like_crypt('62F4a6/89.12z');   # 1
  say looks_like_crypt('foo');             # 0
