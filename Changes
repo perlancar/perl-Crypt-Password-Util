@@ -1,5 +1,12 @@
 Revision history for Crypt-Password-Util
 
+0.03     2012-09-06 (SHARYANTO)
+
+         - Add function: crypt_type().
+
+         - Support SSHA256 and PLAIN-MD5 crypts.
+
+
 0.02     2012-09-06 (SHARYANTO)
 
          No functional changes. Add 'apr1' example in Synopsis.
