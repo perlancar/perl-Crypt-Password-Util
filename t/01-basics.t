@@ -4,7 +4,9 @@ use 5.010;
 use strict;
 use warnings;
 
+use Config;
 use Crypt::Password::Util qw(crypt_type looks_like_crypt crypt);
+use Sort::Versions;
 use Test::More 0.98;
 
 is( crypt_type('$$.Pw5vNt/...'), "CRYPT");
@@ -19,7 +21,13 @@ ok(!crypt_type('foo'));
 ok( looks_like_crypt('$6$12345678$'.("a" x 86)));
 ok(!looks_like_crypt('foo'));
 
-# XXX more sophisticated testing
 ok(crypt_type(crypt("foo")), "crypt() succeeds");
+if ($Config{gnulibc_version} &&
+        versioncmp("v$Config{gnulibc_version}", "v2.7") >= 0) {
+    note "we are running under glibc 2.7+, SSHA512 should be available";
+    like(crypt("foo"), qr/^\$6\$/, "crypt() produces SSHA512");
+} else {
+    note "can't detect glibc 2.7+, skipping SSHA512 test";
+}
 
 done_testing();
