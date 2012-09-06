@@ -7,7 +7,7 @@ use warnings;
 use Crypt::Password::Util qw(crypt_type looks_like_crypt);
 use Test::More 0.98;
 
-is( crypt_type('SN.Pw5vNt/...'), "CRYPT");
+is( crypt_type('$$.Pw5vNt/...'), "CRYPT");
 is( crypt_type('$1$$oXYGukVGYa16SN.Pw5vNt/'), "MD5-CRYPT");
 is( crypt_type('$apr1$x$A8hldSzKARXWgJiwY6zTC.'), "MD5-CRYPT");
 is( crypt_type('$apr1$12345678$A8hldSzKARXWgJiwY6zTC.'), "MD5-CRYPT");

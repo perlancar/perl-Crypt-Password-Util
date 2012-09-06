@@ -16,7 +16,7 @@ my $hexd = qr![0-9a-f]!;
 sub crypt_type {
     local $_ = shift;
 
-    return "CRYPT"     if /\A $b64d {13} \z/ox;
+    return "CRYPT"     if /\A .. $b64d {11} \z/ox;
 
     return "MD5-CRYPT" if /\A \$ (?:apr)?1 \$ $b64d {0,8} \$ $b64d {22} \z/ox;
 
@@ -40,7 +40,7 @@ sub looks_like_crypt { !!crypt_type($_[0]) }
 
  use Crypt::Password::Util qw(crypt_type looks_like_crypt);
 
- say crypt_type('62F4a6/89.12z');                    # CRYPT (13 base64 digits)
+ say crypt_type('62F4a6/89.12z');                    # CRYPT
  say crypt_type('$1$$...');                          # MD5-CRYPT
  say crypt_type('$apr1$4DdvgCFk$...');               # MD5-CRYPT
  say crypt_type('$5$4DdvgCFk$...');                  # SSHA256
