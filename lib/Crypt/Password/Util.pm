@@ -63,6 +63,6 @@ PLAIN-MD5.
 
 =head2 looks_like_crypt($str) => BOOL
 
-Return true if C<$str> looks like a crypted password. It is
+Return true if C<$str> looks like a crypted password.
 
 =cut
