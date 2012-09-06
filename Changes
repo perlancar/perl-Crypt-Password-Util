@@ -1,5 +1,13 @@
 Revision history for Crypt-Password-Util
 
+0.04     2012-09-06 (SHARYANTO)
+
+         [BUG FIXES]
+
+         - SSHA256 and SSHA512 allows up to 16 characters of salt, not 8 like in
+           MD5-CRYPT.
+
+
 0.03     2012-09-06 (SHARYANTO)
 
          - Add function: crypt_type().
