@@ -1,5 +1,10 @@
 Revision history for Crypt-Password-Util
 
+0.08     2012-09-06 (SHARYANTO)
+
+         Use UUID::Random::Patch::UseMRS for more secure salt.
+
+
 0.07     2012-09-06 (SHARYANTO)
 
          No functional changes. Fix salt generation (used + instead of .). Add
