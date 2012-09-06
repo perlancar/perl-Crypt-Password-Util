@@ -42,7 +42,9 @@ sub crypt {
 
     # first use SSHA512
     $salt  = substr(Digest::MD5::md5_base64(UUID::Random::generate()), 0, 16);
+    $salt =~ tr/\+/./;
     $crypt = CORE::crypt($pass, '$6$'.$salt.'$');
+    #say "D:salt=$salt, crypt=$crypt";
     return $crypt if (crypt_type($crypt)//"") eq 'SSHA512';
 
     # fallback to MD5-CRYPT if failed
