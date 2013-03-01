@@ -16,6 +16,7 @@ is( crypt_type('$apr1$12345678$A8hldSzKARXWgJiwY6zTC.'), "MD5-CRYPT");
 is( crypt_type('$5$123456789$'.("a" x 43)), "SSHA256");
 is( crypt_type('$6$12345678$'.("a" x 86)), "SSHA512");
 is( crypt_type('1a1dc91c907325c69271ddf0c944bc72'), "PLAIN-MD5");
+is( crypt_type('$2a$08$TTSynMjJTrXiv3qEZFyM1.H9tjv71i57p2r63QEJe/2p0p/m1GIy2'), "BCRYPT");
 ok(!crypt_type('foo'));
 
 ok( looks_like_crypt('$6$12345678$'.("a" x 86)));

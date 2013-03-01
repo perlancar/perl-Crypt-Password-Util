@@ -26,6 +26,10 @@ sub crypt_type {
     # salted SHA512, supported by glibc 2.7+
     return "SSHA512"   if /\A \$ 6 \$ $b64d {0,16} \$ $b64d {86} \z/ox;
 
+    # passphrase scheme based on Blowfish, designed by Niels Provos and David
+    # Mazieres for OpenBSD. 22 b64-digits salt + 31 digits hash
+    return "BCRYPT" if /\A \$ 2a? \$ \d+ \$ $b64d {53} \z/ox;
+
     return "PLAIN-MD5" if /\A $hexd {32} \z/ox;
 
     return undef;
