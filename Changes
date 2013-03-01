@@ -1,5 +1,12 @@
 Revision history for Crypt-Password-Util
 
+0.09     2013-03-01 (SHARYANTO)
+
+         - Detect BCRYPT encoding ($2$ and $2a$).
+
+         - Mention Authen::Passphrase.
+
+
 0.08     2012-09-06 (SHARYANTO)
 
          Use UUID::Random::Patch::UseMRS for more secure salt.
