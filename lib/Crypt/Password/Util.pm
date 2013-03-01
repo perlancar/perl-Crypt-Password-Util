@@ -98,4 +98,10 @@ random salt. Will first choose SSHA512 with 64-bit random salt. If not supported
 by system, fall back to MD5-CRYPT with 32-bit random salt. If that is not
 supported, fall back to CRYPT.
 
+
+=head1 SEE ALSO
+
+L<Authen::Passphrase> which recognizes more encodings (but currently not SSHA256
+and SSHA512).
+
 =cut
