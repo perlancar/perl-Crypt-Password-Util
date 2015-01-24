@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-**SYNOPSIS**
-=======
 # SYNOPSIS
->>>>>>> master
 
     use Crypt::Password::Util qw(crypt_type looks_like_crypt crypt);
 
@@ -19,24 +15,6 @@
 
     say crypt('pass'); # automatically choose the appropriate type and salt
 
-<<<<<<< HEAD
-**FUNCTIONS**
-
-    crypt_type($str) => STR
-Return crypt type, or undef if $str does not look like a crypted password.  Currently known types: CRYPT (traditional DES crypt), MD5-CRYPT (including Apache variant), SSHA256 (salted SHA256), SSHA512 (salted SHA512), and PLAIN-MD5.
-
-    looks_like_crypt($str) => BOOL
-Return true if $str looks like a crypted password.
-
-
-    crypt($str) => STR
-Like Perl's crypt(), but automatically choose the appropriate crypt type and random salt. Will first choose SSHA512 with 64-bit random salt. If not supported by system, fall back to MD5-CRYPT with 32-bit random salt. If that is not supported, fall back to CRYPT.
-
-**SEE ALSO**
-
-Authen::Passphrase which recognizes more encodings (but currently not SSHA256 and SSHA512).
-
-=======
 # FUNCTIONS
 
 ## crypt\_type($str) => STR
@@ -59,6 +37,5 @@ supported, fall back to CRYPT.
 
 # SEE ALSO
 
-[Authen::Passphrase](https://metacpan.org/pod/Authen::Passphrase) which recognizes more encodings (but currently not SSHA256
-and SSHA512).
->>>>>>> master
+[Authen::Passphrase](https://metacpan.org/pod/Authen::Passphrase) which
+recognizes more encodings (but currently not SSHA256 and SSHA512).
