@@ -1,10 +1,11 @@
 package Crypt::Password::Util;
 
+# DATE
+# VERSION
+
 use 5.010001;
 use strict;
 use warnings;
-
-# VERSION
 
 use Exporter;
 our @ISA = qw(Exporter);
