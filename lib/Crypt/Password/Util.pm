@@ -14,25 +14,38 @@ our @EXPORT_OK = qw(crypt_type looks_like_crypt crypt);
 my $b64d = qr![A-Za-z0-9./]!;
 my $hexd = qr![0-9a-f]!;
 
+our %CRYPT_TYPES = (
+    'MD5-CRYPT' => {
+        summary => 'A baroque passphrase scheme based on MD5, designed by Poul-Henning Kamp and originally implemented in FreeBSD',
+        re => qr/\A \$ (?:apr)?1 \$ $b64d {0,8} \$ $b64d {22} \z/x,
+    },
+    CRYPT => {
+        summary => 'Traditional DES crypt',
+        re => qr/\A .. $b64d {11} \z/x,
+    },
+    SSHA256 => {
+        summary => 'Salted SHA256, supported by glibc 2.7+',
+        re => qr/\A \$ 5 \$ $b64d {0,16} \$ $b64d {43} \z/x,
+    },
+    SSHA512 => {
+        summary => 'Salted SHA512, supported by glibc 2.7+',
+        re => qr/\A \$ 6 \$ $b64d {0,16} \$ $b64d {86} \z/x,
+    },
+    BCRYPT => {
+        summary => 'Passphrase scheme based on Blowfish, designed by Niels Provos and David Mazieres for OpenBSD',
+        # 22 b64-digits salt + 31 digits hash
+        re => qr/\A \$ 2a? \$ \d+ \$ $b64d {53} \z/x,
+    },
+    'PLAIN-MD5' => {
+        re => qr/\A $hexd {32} \z/x,
+    },
+);
+
 sub crypt_type {
-    local $_ = shift;
-
-    return "CRYPT"     if /\A .. $b64d {11} \z/ox;
-
-    return "MD5-CRYPT" if /\A \$ (?:apr)?1 \$ $b64d {0,8} \$ $b64d {22} \z/ox;
-
-    # salted SHA256, supported by glibc 2.7+
-    return "SSHA256"   if /\A \$ 5 \$ $b64d {0,16} \$ $b64d {43} \z/ox;
-
-    # salted SHA512, supported by glibc 2.7+
-    return "SSHA512"   if /\A \$ 6 \$ $b64d {0,16} \$ $b64d {86} \z/ox;
-
-    # passphrase scheme based on Blowfish, designed by Niels Provos and David
-    # Mazieres for OpenBSD. 22 b64-digits salt + 31 digits hash
-    return "BCRYPT" if /\A \$ 2a? \$ \d+ \$ $b64d {53} \z/ox;
-
-    return "PLAIN-MD5" if /\A $hexd {32} \z/ox;
-
+    my $crypt = shift;
+    for my $type (keys %CRYPT_TYPES) {
+        return $type if $crypt =~ $CRYPT_TYPES{$type}{re};
+    }
     return undef;
 }
 
