@@ -9,7 +9,7 @@ use warnings;
 
 use Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT_OK = qw(crypt_type looks_like_crypt crypt);
+our @EXPORT_OK = qw(crypt_type looks_like_crypt crypt crypt_detail);
 
 my $b64d = qr![A-Za-z0-9./]!;
 my $hexd = qr![0-9a-f]!;
@@ -17,32 +17,32 @@ my $hexd = qr![0-9a-f]!;
 our %CRYPT_TYPES = (
     'MD5-CRYPT' => {
         summary => 'A baroque passphrase scheme based on MD5, designed by Poul-Henning Kamp and originally implemented in FreeBSD',
-        re => qr/\A \$ (?:apr)?1 \$ $b64d {0,8} \$ $b64d {22} \z/x,
+        re => qr/\A (\$ (?:apr)?1 \$) ($b64d {0,8}) \$ ($b64d {22}) \z/x,
         re_summary => '$1$ or $apr1$ header',
     },
     CRYPT => {
         summary => 'Traditional DES crypt',
-        re => qr/\A .. $b64d {11} \z/x,
+        re => qr/\A () (..) ($b64d {11}) \z/x,
         re_summary => '11 digit base64 characters',
     },
     SSHA256 => {
         summary => 'Salted SHA256, supported by glibc 2.7+',
-        re => qr/\A \$ 5 \$ $b64d {0,16} \$ $b64d {43} \z/x,
+        re => qr/\A (\$ 5 \$) ($b64d {0,16}) \$ ($b64d {43}) \z/x,
         re_summary => '$5$ header',
     },
     SSHA512 => {
         summary => 'Salted SHA512, supported by glibc 2.7+',
-        re => qr/\A \$ 6 \$ $b64d {0,16} \$ $b64d {86} \z/x,
+        re => qr/\A (\$ 6 \$) ($b64d {0,16}) \$ ($b64d {86}) \z/x,
         re_summary => '$6$ header',
     },
     BCRYPT => {
         summary => 'Passphrase scheme based on Blowfish, designed by Niels Provos and David Mazieres for OpenBSD',
-        re => qr/\A \$ 2a? \$ \d+ \$ $b64d {53} \z/x,
+        re => qr/\A (\$ 2a? \$ \d+) \$ ($b64d {22}) ($b64d {31}) \z/x,
         re_summary => '$2$ or $2a$header followed by 22 base64-digits salt and 31 digits hash',
     },
     'PLAIN-MD5' => {
         summary => 'Unsalted MD5 hash, popular with PHP web applications',
-        re => qr/\A $hexd {32} \z/x,
+        re => qr/\A () () ($hexd {32}) \z/x,
         re_summary => '32 digits of hex characters',
     },
 );
@@ -53,6 +53,15 @@ sub crypt_type {
         return $type if $crypt =~ $CRYPT_TYPES{$type}{re};
     }
     return undef;
+}
+
+sub crypt_detail {
+    my $crypt = shift;
+    my $type = crypt_type($crypt);
+    return $type if !defined $type;
+
+    my ($header, $salt, $hash) = ($crypt =~ $CRYPT_TYPES{$type}{re});
+    return "Type: $type, Header: $header, Salt: $salt, Hash: $hash";
 }
 
 sub looks_like_crypt { !!crypt_type($_[0]) }
@@ -96,6 +105,19 @@ sub crypt {
  say crypt_type('1a1dc91c907325c69271ddf0c944bc72'); # PLAIN-MD5
  say crypt_type('foo');                              # undef
 
+ say crypt_detail('62F4a6/89.12z');
+  # Type: CRYPT, Header: , Salt: 62, Hash: F4a6/89.12z
+ say crypt_detail('$1$$oXYGukVGYa16SN.Pw5vNt/');
+  # Type: MD5-CRYPT, Header: $1$, Salt: , Hash: oXYGukVGYa16SN.Pw5vNt/
+ say crypt_detail('$5$123456789$'.("a" x 43));
+  # Type: SSHA256, Header: $5$, Salt: 123456789, Hash: a...
+ say crypt_detail('$6$12345678$'.("a" x 86));
+  # Type: SSHA512, Header: $6$, Salt: 12345678, Hash: a...
+ say crypt_detail('1a1dc91c907325c69271ddf0c944bc72');
+  # Type: PLAIN-MD5, Header: , Salt: , Hash: 1a1dc91c907325c69271ddf0c944bc72
+ say crypt_detail('foo');
+  # undef
+
  say looks_like_crypt('62F4a6/89.12z');   # 1
  say looks_like_crypt('foo');             # 0
 
@@ -110,6 +132,11 @@ Return crypt type, or undef if C<$str> does not look like a crypted password.
 Currently known types:
 
 # CODE: require Crypt::Password::Util; my $types = \%Crypt::Password::Util::CRYPT_TYPES; print "=over\n\n"; for my $type (sort keys %$types) { print "=item * $type\n\n$types->{$type}{summary}.\n\nRecognized by: $types->{$type}{re_summary}.\n\n" } print "=back\n\n";
+
+=head2 crypt_detail($str) => STR
+
+Return crypt type, header, salt and hash values in a string, or undef if
+C<$str> does not look like a crypted password.
 
 =head2 looks_like_crypt($str) => BOOL
 
