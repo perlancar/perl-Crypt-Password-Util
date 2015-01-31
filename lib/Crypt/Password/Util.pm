@@ -129,8 +129,8 @@ sub crypt {
  say crypt_type('foo');                              # undef
 
  # return detailed information
- say crypt_type('$1$$oXYGukVGYa16SN.Pw5vNt/', 1);
- # => {}
+ my $res = crypt_type('$1$$oXYGukVGYa16SN.Pw5vNt/', 1);
+ # => {type=>'MD5-CRYPT', header=>'$1$', salt=>'', hash=>'oXYGukVGYa16SN.Pw5vNt/'}
 
  say looks_like_crypt('62F4a6/89.12z');   # 1
  say looks_like_crypt('foo');             # 0
