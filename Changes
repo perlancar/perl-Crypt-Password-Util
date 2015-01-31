@@ -1,5 +1,14 @@
 Revision history for Crypt-Password-Util
 
+0.11     2015-01-31 (PERLANCAR)
+
+         - crypt_type(): Add option $detail to return detailed information as a
+           hash (thanks Doyle Young).
+
+         - [doc] Add links for each crypt type for users to find out more
+           information (thanks Doyle Young).
+
+
 0.10     2015-01-25 (PERLANCAR)
 
          - No functional changes.
