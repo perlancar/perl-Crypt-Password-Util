@@ -32,6 +32,11 @@ ok(!crypt_type('foo', 1));
 ok( looks_like_crypt('$6$12345678$'.("a" x 86)));
 ok(!looks_like_crypt('foo'));
 
+{
+    my $crypt = crypt('foo');
+    diag "crypt('foo') result: ", $crypt, ", type (detail): ", explain crypt_type($crypt, 1);
+}
+
 ok(crypt_type(crypt("foo")), "crypt() succeeds");
 if ($Config{gnulibc_version} &&
         versioncmp("v$Config{gnulibc_version}", "v2.7") >= 0) {
