@@ -44,7 +44,7 @@ our %CRYPT_TYPES = (
         summary => 'Salted SHA256, supported by glibc 2.7+',
         re => qr/\A
                  (?P<header>\$ 5 \$)
-                 (?P<salt>$b64d {0,16}) \$
+                 (?P<salt> (?:rounds=[1-9][0-9]{3,8}\$)? $b64d {0,16}) \$
                  (?P<hash>$b64d {43}) \z/x,
         re_summary => '$5$ header',
         link => 'http://en.wikipedia.org/wiki/SHA-2',
@@ -53,7 +53,7 @@ our %CRYPT_TYPES = (
         summary => 'Salted SHA512, supported by glibc 2.7+',
         re => qr/\A
                  (?P<header>\$ 6 \$)
-                 (?P<salt>$b64d {0,16}) \$
+                 (?P<salt> (?:rounds=[1-9][0-9]{3,8}\$)? $b64d {0,16}) \$
                  (?P<hash>$b64d {86}) \z/x,
         re_summary => '$6$ header',
         link => 'http://en.wikipedia.org/wiki/SHA-2',
