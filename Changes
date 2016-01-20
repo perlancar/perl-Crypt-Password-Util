@@ -1,5 +1,14 @@
 Revision history for Crypt-Password-Util
 
+0.14    2016-01-20 (PERLANCAR)
+
+        - Recognize extended DES crypt (EXT-DES).
+
+        - [test] Move crypt() support test to another dist (Acme-Test-crypt).
+
+        - [doc] Mention some other modules.
+
+
 0.13    2016-01-19 (PERLANCAR)
 
         - No functional changes.
