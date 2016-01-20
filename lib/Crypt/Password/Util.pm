@@ -27,10 +27,18 @@ our %CRYPT_TYPES = (
     CRYPT => {
         summary => 'Traditional DES crypt',
         re => qr/\A
-                 (?P<salt>..)
+                 (?P<salt>$b64d {2} | \$\$) # $$ is not accepted as salt, but we see crypts using those in the wild
                  (?P<hash>$b64d {11}) \z/x,
         re_summary => '11 digit base64 characters',
         link => 'http://perldoc.perl.org/functions/crypt.html',
+    },
+    'EXT-DES' => {
+        summary => 'Extended DES crypt',
+        re => qr/\A
+                 (?P<salt>_ $b64d {8} )
+                 (?P<hash>$b64d {11}) \z/x,
+        re_summary => 'underscore followed by 19 digit base64 characters',
+        link => 'https://en.wikipedia.org/wiki/Crypt_%28C%29#BSDi_extended_DES-based_scheme',
     },
     SSHA256 => {
         summary => 'Salted SHA256, supported by glibc 2.7+',

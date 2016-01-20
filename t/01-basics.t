@@ -10,6 +10,7 @@ use Sort::Versions;
 use Test::More 0.98;
 
 is( crypt_type('$$.Pw5vNt/...'), "CRYPT");
+is( crypt_type('_9G..8147mpcfKT8g0U.'), "EXT-DES");
 is( crypt_type('$1$$oXYGukVGYa16SN.Pw5vNt/'), "MD5-CRYPT");
 is( crypt_type('$apr1$x$A8hldSzKARXWgJiwY6zTC.'), "MD5-CRYPT");
 is( crypt_type('$apr1$12345678$A8hldSzKARXWgJiwY6zTC.'), "MD5-CRYPT");
@@ -20,6 +21,7 @@ is( crypt_type('$2a$08$TTSynMjJTrXiv3qEZFyM1.H9tjv71i57p2r63QEJe/2p0p/m1GIy2'), 
 ok(!crypt_type('foo'));
 
 is_deeply( crypt_type('$$.Pw5vNt/...', 1), {type=>"CRYPT", salt=>'$$', hash=>'.Pw5vNt/...'});
+is_deeply( crypt_type('_9G..8147mpcfKT8g0U.', 1), {type=>"EXT-DES", salt=>'_9G..8147', hash=>'mpcfKT8g0U.'});
 is_deeply( crypt_type('$1$$oXYGukVGYa16SN.Pw5vNt/', 1), {type=>"MD5-CRYPT", header=>'$1$', salt=>'', hash=>'oXYGukVGYa16SN.Pw5vNt/'});
 is_deeply( crypt_type('$apr1$x$A8hldSzKARXWgJiwY6zTC.', 1), {type=>"MD5-CRYPT", header=>'$apr1$', salt=>'x', hash=>'A8hldSzKARXWgJiwY6zTC.'});
 is_deeply( crypt_type('$apr1$12345678$A8hldSzKARXWgJiwY6zTC.', 1), {type=>"MD5-CRYPT", header=>'$apr1$', salt=>'12345678', hash=>'A8hldSzKARXWgJiwY6zTC.'});
