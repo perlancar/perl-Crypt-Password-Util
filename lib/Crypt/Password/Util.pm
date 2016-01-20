@@ -125,8 +125,23 @@ sub crypt {
 
 =head1 SYNOPSIS
 
- use Crypt::Password::Util qw(crypt_type looks_like_crypt crypt);
+ use Crypt::Password::Util qw(
+     crypt
+     looks_like_crypt
+     crypt_type
+ );
 
+Generating crypted password:
+
+ say crypt('pass'); # automatically choose the appropriate type and salt
+
+Recognizing whether a string is a crypted password:
+
+ # return yes/no
+ say looks_like_crypt('62F4a6/89.12z');   # 1
+ say looks_like_crypt('foo');             # 0
+
+ # return the crypt type
  say crypt_type('62F4a6/89.12z');                    # CRYPT
  say crypt_type('$1$$...');                          # MD5-CRYPT
  say crypt_type('$apr1$4DdvgCFk$...');               # MD5-CRYPT
@@ -139,44 +154,41 @@ sub crypt {
  # return detailed information
  my $res = crypt_type('$1$$oXYGukVGYa16SN.Pw5vNt/', 1);
  # => {type=>'MD5-CRYPT', header=>'$1$', salt=>'', hash=>'oXYGukVGYa16SN.Pw5vNt/'}
-
- say looks_like_crypt('62F4a6/89.12z');   # 1
- say looks_like_crypt('foo');             # 0
-
- say crypt('pass'); # automatically choose the appropriate type and salt
+ $res = crypt_type('foo', 1);
+ # => undef
 
 
 =head1 DESCRIPTION
 
-Crypt::Password::Util facilitates the generation and recognition of unix
-passwords as found in /etc/shadow on Unix/Linux systems and /etc/master.passwd
-on BSD systems. When using crypt(), it is possible several methods will be
-attempted before returning a result. This is done to insure that your system
-supports the selected hash type.
+Crypt::Password::Util provides routines to: 1) generate crypted password; 2)
+recognition of whether a string is a crypted password or not, and its crypt
+type.
+
+It recognizes several types of crypt methods:
+
+# CODE: require Crypt::Password::Util; my $types = \%Crypt::Password::Util::CRYPT_TYPES; print "=over\n\n"; for my $type (sort keys %$types) { print "=item * $type\n\n$types->{$type}{summary}.\n\nRecognized by: $types->{$type}{re_summary}.\n\nMore info: L<$types->{$type}{link}>\n\n" } print "=back\n\n";
 
 
 =head1 FUNCTIONS
+
+=head2 looks_like_crypt($str) => bool
+
+Return true if C<$str> looks like a crypted password. If you want more
+information instead of just a yes/no, use C<crypt_type()>.
 
 =head2 crypt_type($str[, $detail]) => str|hash
 
 Return crypt type, or undef if C<$str> does not look like a crypted password.
 Currently known types:
 
-# CODE: require Crypt::Password::Util; my $types = \%Crypt::Password::Util::CRYPT_TYPES; print "=over\n\n"; for my $type (sort keys %$types) { print "=item * $type\n\n$types->{$type}{summary}.\n\nRecognized by: $types->{$type}{re_summary}.\n\nMore info: L<$types->{$type}{link}>\n\n" } print "=back\n\n";
-
 If C<$detail> is set to true, will return a hashref of information instead. This
 include C<type>, as well as the parsed header, salt, etc.
 
-=head2 looks_like_crypt($str) => BOOL
+=head2 crypt($str) => str
 
-Return true if C<$str> looks like a crypted password.
-
-=head2 crypt($str) => STR
-
-Like Perl's crypt(), but automatically choose the appropriate crypt type and
-random salt. Will first choose SSHA512 with 64-bit random salt. If not supported
-by system, fall back to MD5-CRYPT with 32-bit random salt. If that is not
-supported, fall back to CRYPT.
+Crypt password. Will first choose SSHA512 with 64-bit random salt. If not
+supported by system, fall back to MD5-CRYPT with 32-bit random salt. If that is
+not supported, fall back to CRYPT (traditional DES).
 
 
 =head1 SEE ALSO
