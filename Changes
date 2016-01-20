@@ -1,5 +1,10 @@
 Revision history for Crypt-Password-Util
 
+0.15    2016-01-20 (PERLANCAR)
+
+	- Support rounds=... option in SSHA256 & SSHA512.
+
+
 0.14    2016-01-20 (PERLANCAR)
 
         - Recognize extended DES crypt (EXT-DES).
