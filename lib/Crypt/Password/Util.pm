@@ -176,4 +176,11 @@ supported, fall back to CRYPT.
 L<Authen::Passphrase> which recognizes more encodings (but currently not SSHA256
 and SSHA512).
 
+L<Crypt::Bcrypt::Easy> to generate BCRYPT crypts.
+
+L<Crypt::PasswdMD5> to generate MD5-CRYPT crypts.
+
+L<Crypt::Password> which also provides a routine to compare a password with a
+crypted password.
+
 =cut
