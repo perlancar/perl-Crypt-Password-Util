@@ -96,28 +96,46 @@ sub crypt_type {
 
 sub looks_like_crypt { !!crypt_type($_[0]) }
 
-sub crypt {
-    require UUID::Random::Patch::UseMRS;
-    require Digest::MD5;
+sub _random_base64_chars {
+    state $dummy = do { require Bytes::Random::Secure };
 
+    my $num_chars = shift;
+
+    my $num_bytes = int($num_chars * 3/4) + 1;
+    my $res = substr(
+        Bytes::Random::Secure::random_bytes_base64($num_bytes), 0, $num_chars);
+    $res =~ s/\+/./g;
+    #say "D:random_base64_chars=<$res> ($num_chars)";
+    return $res;
+}
+
+sub crypt {
     my $pass = shift;
     my ($salt, $crypt);
 
-    # first use SSHA512
-    $salt  = substr(Digest::MD5::md5_base64(UUID::Random::generate()), 0, 16);
-    $salt =~ tr/\+/./;
-    $crypt = CORE::crypt($pass, '$6$'.$salt.'$');
-    #say "D:salt=$salt, crypt=$crypt";
-    return $crypt if (crypt_type($crypt)//"") eq 'SSHA512';
+    # on OpenBSD, first try BCRYPT
+    if ($^O eq 'openbsd') {
+        $salt = sprintf('$2b$%02d$%s', 7, _random_base64_chars(22));
+        $crypt = CORE::crypt($pass, $salt);
+        return $crypt if 'BCRYPT' eq (crypt_type($crypt) // '');
+    } else {
+        # otherwise, try SSHA512
+        $salt  = sprintf('$6$rounds=%d$%s', 15000, _random_base64_chars(16));
+        $crypt = CORE::crypt($pass, $salt);
+        return $crypt if 'SSHA512' eq (crypt_type($crypt) // '');
+    }
 
-    # fallback to MD5-CRYPT if failed
-    $salt = substr($salt, 0, 8);
-    $crypt = CORE::crypt($pass, '$1$'.$salt.'$');
-    return $crypt if (crypt_type($crypt)//"") eq 'MD5-CRYPT';
+    # next, try MD5-CRYPT
+    $salt = sprintf('$1$%s', _random_base64_chars(8));
+    $crypt = CORE::crypt($pass, $salt);
+    return $crypt if 'MD5-CRYPT' eq (crypt_type($crypt) // '');
 
     # fallback to CRYPT if failed
-    $salt = substr($salt, 0, 2);
-    CORE::crypt($pass, $salt);
+    $salt = _random_base64_chars(2);
+    $crypt = CORE::crypt($pass, $salt);
+    return $crypt if 'CRYPT' eq (crypt_type($crypt) // '');
+
+    die "Can't generate crypt (tried all methods)";
 }
 
 1;
@@ -186,9 +204,17 @@ include C<type>, as well as the parsed header, salt, etc.
 
 =head2 crypt($str) => str
 
-Crypt password. Will first choose SSHA512 with 64-bit random salt. If not
-supported by system, fall back to MD5-CRYPT with 32-bit random salt. If that is
-not supported, fall back to CRYPT (traditional DES).
+Try to create a "reasonably secure" crypt password with the support available
+from the system's crypt().
+
+Will first try to create a cost-based crypt, using rounds value that will
+approximately take ~10ms (on my PC computer, an Intel Core i5-2400 CPU, that is)
+to create. This lets a server verify ~100 passwords per second, which should be
+enough for many cases. On OpenBSD, will try BCRYPT with cost=7. On other
+systems, will try SSHA512 with rounds=15000.
+
+If the above fails (unsupported by your crypt()), will fallback to MD5-CRYPT
+(supported by NetBSD), then CRYPT. Will die if that also fails.
 
 
 =head1 SEE ALSO
@@ -196,9 +222,11 @@ not supported, fall back to CRYPT (traditional DES).
 L<Authen::Passphrase> which recognizes more encodings (but currently not SSHA256
 and SSHA512).
 
-L<Crypt::Bcrypt::Easy> to generate BCRYPT crypts.
+L<Crypt::Bcrypt::Easy> to generate BCRYPT crypts on systems that do not natively
+support it.
 
-L<Crypt::PasswdMD5> to generate MD5-CRYPT crypts.
+L<Crypt::PasswdMD5> to generate MD5-CRYPT crypts on systems that do not natively
+support it.
 
 L<Crypt::Password> which also provides a routine to compare a password with a
 crypted password.
