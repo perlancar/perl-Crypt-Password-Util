@@ -1,5 +1,14 @@
 Revision history for Crypt-Password-Util
 
+0.17    2016-01-21 (PERLANCAR)
+
+	- crypt() now tries BCRYPT first on OpenBSD (with reasonable value of
+	  cost), or SSHA512 (with reasonable value of rounds) on other systems,
+	  then it falls back to MD5-CRYPT and CRYPT.
+
+        - Switch to Bytes::Random::Secure.
+
+
 0.16    2016-01-21 (PERLANCAR)
 
 	- Recognize bcrypt variants $2y$ and $2b$ used in OpenBSD.
