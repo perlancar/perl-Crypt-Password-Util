@@ -45,4 +45,10 @@ if ($Config{gnulibc_version} &&
     note "can't detect glibc 2.7+, skipping SSHA512 test";
 }
 
+# just some sanity checks, print several crypts
+{
+    diag "Some crypt() results on this system: ",
+        explain [map {crypt(rand())} 1..5];
+}
+
 done_testing();
