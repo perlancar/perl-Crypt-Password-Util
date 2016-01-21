@@ -61,7 +61,7 @@ our %CRYPT_TYPES = (
     BCRYPT => {
         summary => 'Passphrase scheme based on Blowfish, designed by Niels Provos and David Mazieres for OpenBSD',
         re => qr/\A
-                 (?P<header>\$ 2a? \$)
+                 (?P<header>\$ 2 [ayb]? \$)
                  (?P<cost>\d+) \$
                  (?P<salt>$b64d {22})
                  (?P<hash>$b64d {31}) \z/x,
