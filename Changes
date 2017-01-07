@@ -1,5 +1,3 @@
-Revision history for Crypt-Password-Util
-
 0.17    2016-01-21 (PERLANCAR)
 
 	- crypt() now tries BCRYPT first on OpenBSD (with reasonable value of
