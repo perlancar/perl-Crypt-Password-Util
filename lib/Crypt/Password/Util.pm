@@ -179,7 +179,7 @@ Recognizing whether a string is a crypted password:
 =head1 DESCRIPTION
 
 Crypt::Password::Util provides routines to: 1) generate crypted password; 2)
-recognition of whether a string is a crypted password or not, and its crypt
+recognize whether a string is a crypted password or not, along with its crypt
 type.
 
 It recognizes several types of crypt methods:
