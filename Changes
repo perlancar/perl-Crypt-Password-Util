@@ -1,4 +1,4 @@
-0.17    2016-01-21 (PERLANCAR)
+0.17    2016-01-21  Released-By: PERLANCAR
 
 	- crypt() now tries BCRYPT first on OpenBSD (with reasonable value of
 	  cost), or SSHA512 (with reasonable value of rounds) on other systems,
@@ -7,17 +7,17 @@
         - Switch to Bytes::Random::Secure.
 
 
-0.16    2016-01-21 (PERLANCAR)
+0.16    2016-01-21  Released-By: PERLANCAR
 
 	- Recognize bcrypt variants $2y$ and $2b$ used in OpenBSD.
 
 
-0.15    2016-01-20 (PERLANCAR)
+0.15    2016-01-20  Released-By: PERLANCAR
 
 	- Support rounds=... option in SSHA256 & SSHA512.
 
 
-0.14    2016-01-20 (PERLANCAR)
+0.14    2016-01-20  Released-By: PERLANCAR
 
         - Recognize extended DES crypt (EXT-DES).
 
@@ -26,21 +26,21 @@
         - [doc] Mention some other modules.
 
 
-0.13    2016-01-19 (PERLANCAR)
+0.13    2016-01-19  Released-By: PERLANCAR
 
         - No functional changes.
 
         - [Testing] Add diagnostics message to show what crypt() produces.
 
 
-0.12    2015-01-31 (PERLANCAR)
+0.12    2015-01-31  Released-By: PERLANCAR
 
 	- No functional changes.
 
 	- [doc] Fix sample output in Synopsis.
 
 
-0.11     2015-01-31 (PERLANCAR)
+0.11     2015-01-31  Released-By: PERLANCAR
 
          - crypt_type(): Add option $detail to return detailed information as a
            hash (thanks Doyle Young).
@@ -49,7 +49,7 @@
            information (thanks Doyle Young).
 
 
-0.10     2015-01-25 (PERLANCAR)
+0.10     2015-01-25  Released-By: PERLANCAR
 
          - No functional changes.
 
@@ -59,39 +59,39 @@
            easier to add new types.
 
 
-0.09     2013-03-01 (SHARYANTO)
+0.09     2013-03-01  Released-By: SHARYANTO
 
          - Detect BCRYPT encoding ($2$ and $2a$).
 
          - Mention Authen::Passphrase.
 
 
-0.08     2012-09-06 (SHARYANTO)
+0.08     2012-09-06  Released-By: SHARYANTO
 
          - Use UUID::Random::Patch::UseMRS for more secure salt.
 
 
-0.07     2012-09-06 (SHARYANTO)
+0.07     2012-09-06  Released-By: SHARYANTO
 
          - No functional changes. Fix salt generation (used + instead of .). Add
            more tests.
 
 
-0.06     2012-09-06 (SHARYANTO)
+0.06     2012-09-06  Released-By: SHARYANTO
 
          [ENHANCEMENTS]
 
          - Add function: crypt().
 
 
-0.05     2012-09-06 (SHARYANTO)
+0.05     2012-09-06  Released-By: SHARYANTO
 
          [BUG FIXES]
 
          - CRYPT: salt can be non-base64 digits.
 
 
-0.04     2012-09-06 (SHARYANTO)
+0.04     2012-09-06  Released-By: SHARYANTO
 
          [BUG FIXES]
 
@@ -99,7 +99,7 @@
            MD5-CRYPT.
 
 
-0.03     2012-09-06 (SHARYANTO)
+0.03     2012-09-06  Released-By: SHARYANTO
 
          [ENHANCEMENTS]
 
@@ -108,11 +108,11 @@
          - Support SSHA256 and PLAIN-MD5 crypts.
 
 
-0.02     2012-09-06 (SHARYANTO)
+0.02     2012-09-06  Released-By: SHARYANTO
 
          - No functional changes. Add 'apr1' example in Synopsis.
 
 
-0.01     2012-09-06 (SHARYANTO)
+0.01     2012-09-06  Released-By: SHARYANTO
 
          - First release.
